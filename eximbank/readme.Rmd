@@ -1,0 +1,11 @@
+---
+title: "readme"
+output: html_document
+---
+
+This app will crawl Eximbank website (local Vietnam bank) and display up to date exchange rate. Any persistent feature require BYO database but code for using database is commented out since Rstudio server seems to have problem with reading and writing large external database at the moment.
+
+For educational purpose only
+
+Created by Dr. C Do
+Dedicated to my mom who is a fan of this bank.
