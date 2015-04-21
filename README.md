@@ -1,9 +1,15 @@
+---
+output: html_document
+---
 # shiny-apps
 Building apps using shiny is really fun and easy so this repo is dedicated to various apps I built using the shiny package.
 
 The following apps are now deployed:
 
-* estate: https://umdocc.shinyapps.io/project
+* eximbank: https://umdocc.shinyapps.io/eximbank
+mobile app for Vietnamese local bank. The app make use of R web crawling capability and MySQL. 
+
+* estate: https://umdocc.shinyapps.io/estate
 database project for real estate in Australia. The app aims to build a comprehensive database for house pricing and information in Australia by using data collected from various public sources. Shiny GUI provide some interactive and graphical information for the end users. Database uses the same RMySQL workaround for shiny apps.
 
 * carsmpg: https://umdocc.shinyapps.io/project
