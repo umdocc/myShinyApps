@@ -1,0 +1,79 @@
+A look at cars MPG vs engine size
+========================================================
+author: Cuong Do
+date: 22/2/2015
+
+Motivation
+========================================================
+
+Cars' MPGs get better with smaller enginer size. 
+But how much better?
+* Depends on manufacturer
+  + May be the Japanese makers are better in this respect
+* Attemp to visualize this "technical ability"
+  + fit a regression model to the MPG vs Engine size plot
+- See how a manufacturer performs over the years
+
+Example: Acura MPG vs Engine size
+========================================================
+
+```{r, echo=FALSE,echo=FALSE,fig.width=8,fig.height=6}
+data <- read.table("vehicles.csv",sep=",",header=TRUE)
+relData <- data[(data$year>1995 )&(data$year<max(data$year)), ]
+vehicles<-relData[,c("year","comb08","displ","fuelType","make","evMotor")]
+vehicles$make<-as.character(vehicles$make)
+vehicles<-vehicles[((vehicles$make=="Acura")),]
+x<-vehicles$displ; y<-vehicles$comb08
+par(bg="grey")
+plot(x,y, col="red", xlab="Engine Size (l)",ylab="MPG",main="MPG vs Engine size for Acura")
+```
+*Source:
++http://www.fueleconomy.gov/feg/epadata/vehicles.csv.zip
+
+How do we grade manufacturer?
+========================================================
+* Method: linear regression
+  + fit a linear line and calculate the inverse of the slope
+```{r, eval=FALSE}
+fit <- lm( y~x) #linear regression model  
+            meritPoint<- (-fit$coeff[2])
+```
+* Method: Quadratic Model
+  + Fit a parabola and calculate the curvature of the fit
+```{r, eval=FALSE}
+fit2 <- lm( y~poly(x,2,raw=TRUE)) #quadratic regression model
+meritPoint<- (fit2$coeff[3])
+```
+
+Visualize data over the year
+========================================================
+
+```{r, echo=FALSE,fig.width=12,fig.height=8}
+data <- read.table("vehicles.csv",sep=",",header=TRUE)
+relData <- data[(data$year>1995 )&(data$year<max(data$year)), ]
+vehicles<-relData[,c("year","comb08","displ","fuelType","make","evMotor")]
+vehicles$make<-as.character(vehicles$make)
+
+merits<-vector(length=20)
+for (i in 1:20){
+        makerVehicles<-vehicles[((vehicles$make=="Acura")&(vehicles$year==(i+1995))),]
+        #skip if manufacturer does not have a model for that year
+        if (dim(makerVehicles)[1]!=0){
+          makerData<-aggregate( comb08~displ, makerVehicles, mean )
+          x<-makerData$displ; y<-makerData$comb08
+          
+            fit <- lm( y~x) #linear regression model  
+            meritPoint<- -(fit$coeff[2]) # the inverse of the slope indicates the maker technical ability
+          
+                    merits[i]<-meritPoint #write merit point to vector
+        }
+        
+      }
+merits[is.na(merits)]<-0 #replace NA with zero
+    total_sum<-as.character(sum(merits))
+    
+    xdata <- 1996:2015 # 
+    ydata  <- merits
+par(bg="grey") 
+    plot(xdata,ydata,type="b", lwd=2,col="red", xlab="Year",ylab="Point",main=paste("Technical points for", "Acura", "over the last 20 years"),sub=paste("Total points =", (total_sum)))
+```

@@ -1,0 +1,8 @@
+---
+title: "Readme"
+author: "Cuong Do"
+date: "Monday, March 02, 2015"
+output: pdf_document
+---
+
+This app will calculate the technical ability of a car maker by measuring their MPG versus different engine size (engine displacement). A regression model is then fitted to identify how agressively a car manufacturer's can be improved towards smaller engine size.
